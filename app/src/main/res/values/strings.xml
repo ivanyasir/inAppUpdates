@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">InAppUpdates</string>
+    <string name="shortcut3">Disable shortcut</string>
+    <string name="shortcut2">yo update yoo</string>
+    <string name="shortcut1">short label shortcut</string>
+    <string name="shortcut1a">posisi dongg</string>
+</resources>
