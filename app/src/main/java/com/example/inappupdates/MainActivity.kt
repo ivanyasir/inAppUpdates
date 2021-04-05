@@ -1,14 +1,14 @@
 package com.example.inappupdates
 
-import android.app.PendingIntent
+import android.app.ActivityOptions
 import android.content.Intent
-import android.content.pm.ShortcutInfo
-import android.content.pm.ShortcutManager
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
+import android.util.Pair
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -16,13 +16,16 @@ import com.google.android.play.core.install.model.UpdateAvailability
 
 private const val UPDATE_REQUEST_CODE = 123
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
-
+class MainActivity : AppCompatActivity() {
 
     private val appUpdateManager: AppUpdateManager by lazy { AppUpdateManagerFactory.create(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
+
+        initView()
 
         appUpdateManager.appUpdateInfo.addOnSuccessListener {
             Log.e("update",""+ it.updateAvailability())
@@ -42,35 +45,31 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             Log.e("update", "Failed to check for update: $it")
         }
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val shortcutManager = getSystemService(ShortcutManager::class.java)
-//
-//            if (shortcutManager!!.isRequestPinShortcutSupported) {
-//                // Assumes there's already a shortcut with the ID "my-shortcut".
-//                // The shortcut must be enabled.
-//                val pinShortcutInfo = ShortcutInfo.Builder(this, "my-shortcut").build()
-//
-//                // Create the PendingIntent object only if your app needs to be notified
-//                // that the user allowed the shortcut to be pinned. Note that, if the
-//                // pinning operation fails, your app isn't notified. We assume here that the
-//                // app has implemented a method called createShortcutResultIntent() that
-//                // returns a broadcast intent.
-//                val pinnedShortcutCallbackIntent =
-//                    shortcutManager.createShortcutResultIntent(pinShortcutInfo)
-//
-//                // Configure the intent so that your app's broadcast receiver gets
-//                // the callback successfully.For details, see PendingIntent.getBroadcast().
-//                val successCallback = PendingIntent.getBroadcast(
-//                    this, /* request code */ 0,
-//                    pinnedShortcutCallbackIntent, /* flags */ 0
-//                )
-//
-//                shortcutManager.requestPinShortcut(
-//                    pinShortcutInfo,
-//                    successCallback.intentSender
-//                )
-//            }
-//        }
+    }
+
+    private fun initView() {
+        val btnNext = findViewById<Button>(R.id.btn_next)
+        btnNext.setOnClickListener {
+            val i = Intent(this, ShortCutActivity::class.java)
+
+            val pairList = Pair(it, "imageTransition")
+            val options = ActivityOptions.makeSceneTransitionAnimation(
+                this, pairList)
+
+            startActivity(i, options.toBundle())
+
+        }
+        val btnCircle = findViewById<ImageView>(R.id.img_circle)
+        btnCircle.setOnClickListener {
+            val i = Intent(this, ShortCutActivity::class.java)
+
+            val pairList = Pair(it, "imageTransition")
+                    val options = ActivityOptions.makeSceneTransitionAnimation(
+                this, pairList)
+
+            startActivity(i, options.toBundle())
+
+        }
 
     }
 
